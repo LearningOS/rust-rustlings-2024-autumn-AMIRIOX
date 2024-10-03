@@ -38,6 +38,7 @@ mod my_module {
         for (string, command) in input.iter() {
             // TODO: Complete the function body. You can do it!
             match command {
+                /*
                 Command::Uppercase => {
                     let mut str2 = string.clone();
                     str2.make_ascii_uppercase();
@@ -52,7 +53,12 @@ mod my_module {
                         str2 += "bar";
                     }
                     output.push(str2);
-                }
+                }*/
+                Command::Uppercase => output.push(string.to_uppercase()),
+                Command::Trim => output.push(string.trim().to_string()),
+                Command::Append(u) => output.push(string.to_owned() + &"bar".repeat(*u))   
+                    // but why?
+                //Command::Append(u) => output.push(string + "bar".repeat(*u))
             }
         }
         output

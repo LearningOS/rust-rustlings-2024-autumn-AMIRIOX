@@ -20,7 +20,6 @@
 //
 // No hints this time!
 
-// I AM NOT DONE
 
 pub enum Command {
     Uppercase,
@@ -57,7 +56,8 @@ mod my_module {
                 Command::Uppercase => output.push(string.to_uppercase()),
                 Command::Trim => output.push(string.trim().to_string()),
                 Command::Append(u) => output.push(string.to_owned() + &"bar".repeat(*u))   
-                    // but why?
+                    // input.iter(), &(String, Command), &str
+                    // "bar".repeat(*u) is String, &String -> &str
                 //Command::Append(u) => output.push(string + "bar".repeat(*u))
             }
         }

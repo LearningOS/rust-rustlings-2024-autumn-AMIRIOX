@@ -1,5 +1,3 @@
-// lifetimes1.rs
-//
 // The Rust compiler needs to know how to check whether supplied references are
 // valid, so that it can let the programmer know if a reference is at risk of
 // going out of scope before it is used. Remember, references are borrows and do
@@ -8,9 +6,8 @@
 // Execute `rustlings hint lifetimes1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
-fn longest(x: &str, y: &str) -> &str {
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
     if x.len() > y.len() {
         x
     } else {

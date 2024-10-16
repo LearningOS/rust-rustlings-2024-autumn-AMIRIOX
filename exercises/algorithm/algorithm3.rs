@@ -1,12 +1,22 @@
 /*
-	sort
-	This problem requires you to implement a sorting algorithm
-	you can use bubble sorting, insertion sorting, heap sorting, etc.
+    sort
+    This problem requires you to implement a sorting algorithm
+    you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
 // I AM NOT DONE
 
-fn sort<T>(array: &mut [T]){
-	//TODO
+fn sort<T: PartialOrd>(array: &mut [T]){
+    // bubble sorting
+    loop {
+        let mut need_sort = false;
+        for i in 0..array.len() - 1 {
+            if array[i] > array[i + 1] {
+                array.swap(i, i + 1);
+                need_sort = true;
+            }
+        }
+        if need_sort == false { break; }
+    }
 }
 #[cfg(test)]
 mod tests {

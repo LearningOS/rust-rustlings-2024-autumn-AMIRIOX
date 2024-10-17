@@ -2,10 +2,12 @@
     heap
     This question requires you to implement a binary heap function
 */
+
 // I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
+use std::fmt::Display;
 
 pub struct Heap<T>
 where
@@ -37,7 +39,27 @@ where
     }
 
     pub fn add(&mut self, value: T) {
-        //TODO
+        self.items.push(value);
+        self.count += 1;
+
+        let mut cur = self.count;
+        while cur > 1 {
+            let cur_item = &self.items[cur - 1];
+
+            let par_idx = self.parent_idx(cur);
+            let par_item = &self.items[par_idx - 1];
+
+            // 向父节点比较，如果满足比较器就应该向上浮动
+            // 否则位置合法，不需要调整
+            if (self.comparator)(cur_item, par_item)  {
+                println!("swap: {} and {}", cur, par_idx);
+                self.items.swap(cur - 1, par_idx - 1);
+                cur = par_idx;
+            }else {
+                println!("no need to swap: {} and {}", cur, par_idx);
+                break;
+            }
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -56,10 +78,11 @@ where
         self.left_child_idx(idx) + 1
     }
 
+    /*
     fn smallest_child_idx(&self, idx: usize) -> usize {
-        //TODO
         0
     }
+    */
 }
 
 impl<T> Heap<T>
@@ -84,8 +107,39 @@ where
     type Item = T;
 
     fn next(&mut self) -> Option<T> {
-        //TODO
-        None
+        if self.is_empty() {
+            return None;
+        }
+
+        // 将根节点删除并将末位节点置换过来
+        // root 存储根节点值
+        let root = self.items.swap_remove(0);
+        self.count -= 1;
+
+        let mut cur = 1;
+        
+        loop {
+            let left_child = self.left_child_idx(cur);
+            let right_child = self.right_child_idx(cur);
+            let mut bigger = cur;
+            // 如果子节点有更符合比较器的就置换
+            if left_child <= self.items.len() && (self.comparator)(&self.items[left_child - 1], &self.items[bigger - 1]) {
+                bigger = left_child;
+            }
+            if right_child <= self.items.len() && (self.comparator)(&self.items[right_child - 1], &self.items[bigger - 1]) {
+                bigger = right_child;
+            }
+
+            // 不能再被更改，位置合法
+            if bigger == cur {
+                break;
+            }
+
+            self.items.swap(cur - 1, bigger - 1);
+            cur = bigger;
+        }
+
+        Some(root)
     }
 }
 
@@ -152,3 +206,4 @@ mod tests {
         assert_eq!(heap.next(), Some(2));
     }
 }
+

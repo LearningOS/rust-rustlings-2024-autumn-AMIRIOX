@@ -3,7 +3,6 @@
     This problem requires you to implement a sorting algorithm
     you can use bubble sorting, insertion sorting, heap sorting, etc.
 */
-// I AM NOT DONE
 
 fn sort<T: PartialOrd>(array: &mut [T]){
     // bubble sorting

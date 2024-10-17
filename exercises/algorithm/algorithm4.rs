@@ -9,6 +9,7 @@ use std::fmt::Debug;
 
 
 #[derive(Debug)]
+#[derive(Clone)]
 struct TreeNode<T>
 where
     T: Ord,
@@ -39,7 +40,7 @@ where
     }
 }
 
-impl<T> BinarySearchTree<T>
+impl<T: Clone> BinarySearchTree<T>
 where
     T: Ord,
 {
@@ -50,13 +51,38 @@ where
 
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
-        //TODO
+        match self.root {
+            None => {
+                self.root = Some(Box::new(TreeNode {
+                    value: value,
+                    left: None,
+                    right: None
+                }));
+            },
+            Some(ref mut root) => {
+                root.insert(value);
+            }
+        }
     }
 
     // Search for a value in the BST
     fn search(&self, value: T) -> bool {
-        //TODO
-        true
+        if let None = self.root { return false; }
+        let mut root = self.root.clone();
+        loop {
+            match root {
+                None => return false,
+                Some(ref mut root_node) => {
+                    if value == root_node.value {
+                        return true;
+                    }else if value < root_node.value {
+                        root = root.unwrap().left;
+                    }else if value > root_node.value {
+                        root = root.unwrap().right;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -66,7 +92,29 @@ where
 {
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
-        //TODO
+        if value < self.value {
+            match self.left {
+                Some(ref mut left_node) => left_node.insert(value),
+                None => {
+                    self.left = Some(Box::new(Self {
+                        value: value,
+                        left: None,
+                        right: None
+                    }));
+                }
+            }
+        }else if value > self.value {
+            match self.right {
+                Some(ref mut right_node) => right_node.insert(value),
+                None => {
+                    self.right = Some(Box::new(Self {
+                        value: value,
+                        left: None,
+                        right: None
+                    }));
+                }
+            }
+        }
     }
 }
 

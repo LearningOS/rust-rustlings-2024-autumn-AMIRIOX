@@ -3,7 +3,6 @@
     This question requires you to implement a binary heap function
 */
 
-// I AM NOT DONE
 
 use std::cmp::Ord;
 use std::default::Default;
@@ -44,16 +43,16 @@ where
 
         let mut cur = self.count;
         while cur > 1 {
-            let cur_item = &self.items[cur - 1];
+            let cur_item = &self.items[cur];
 
             let par_idx = self.parent_idx(cur);
-            let par_item = &self.items[par_idx - 1];
+            let par_item = &self.items[par_idx];
 
             // 向父节点比较，如果满足比较器就应该向上浮动
             // 否则位置合法，不需要调整
             if (self.comparator)(cur_item, par_item)  {
                 println!("swap: {} and {}", cur, par_idx);
-                self.items.swap(cur - 1, par_idx - 1);
+                self.items.swap(cur, par_idx);
                 cur = par_idx;
             }else {
                 println!("no need to swap: {} and {}", cur, par_idx);
@@ -113,7 +112,7 @@ where
 
         // 将根节点删除并将末位节点置换过来
         // root 存储根节点值
-        let root = self.items.swap_remove(0);
+        let root = self.items.swap_remove(1);
         self.count -= 1;
 
         let mut cur = 1;
@@ -123,10 +122,10 @@ where
             let right_child = self.right_child_idx(cur);
             let mut bigger = cur;
             // 如果子节点有更符合比较器的就置换
-            if left_child <= self.items.len() && (self.comparator)(&self.items[left_child - 1], &self.items[bigger - 1]) {
+            if left_child < self.items.len() && (self.comparator)(&self.items[left_child], &self.items[bigger]) {
                 bigger = left_child;
             }
-            if right_child <= self.items.len() && (self.comparator)(&self.items[right_child - 1], &self.items[bigger - 1]) {
+            if right_child < self.items.len() && (self.comparator)(&self.items[right_child], &self.items[bigger]) {
                 bigger = right_child;
             }
 
@@ -135,7 +134,7 @@ where
                 break;
             }
 
-            self.items.swap(cur - 1, bigger - 1);
+            self.items.swap(cur, bigger);
             cur = bigger;
         }
 
